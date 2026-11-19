@@ -1,0 +1,34 @@
+# Credentials & Secrets
+google-credentials.json
+*credentials*.json
+*.key
+.env
+.env.local
+.env.*.local
+
+# Output / Generated files
+output/*.apkg
+output/audio/*.mp3
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python (if used)
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo

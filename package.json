@@ -1,0 +1,29 @@
+{
+  "name": "text-to-japanese",
+  "version": "1.0.0",
+  "description": "Japanese listening and immersion audio generator for anime & learners",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node src/test-connection.js",
+    "test:pipeline": "node src/test-pipeline.js"
+  },
+  "keywords": [
+    "japanese",
+    "anki",
+    "text-to-speech",
+    "anime",
+    "immersion",
+    "furigana"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/text-to-speech": "^6.2.0",
+    "@google-cloud/translate": "^9.0.5",
+    "anki-apkg-export": "^5.0.0",
+    "dotenv": "^17.3.1",
+    "express": "^4.22.1",
+    "kuromoji": "^0.1.2"
+  }
+}

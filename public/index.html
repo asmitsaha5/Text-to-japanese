@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnkiAnime - Japanese Immersion & Audio Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #ec4899;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --input-bg: #1f2937;
+      --ruby: #a5b4fc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 16px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    textarea, input[type="text"], select {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    textarea {
+      font-family: 'Noto Sans JP', 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    textarea:focus, input[type="text"]:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    button.btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    button.btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    button.btn-primary:active {
+      transform: translateY(0);
+    }
+
+    button.btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .sample-pill {
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: #9ca3af;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 6px;
+      transition: 0.2s;
+    }
+
+    .sample-pill:hover {
+      color: #fff;
+      border-color: #4b5563;
+    }
+
+    /* Results section */
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .download-deck-btn {
+      background: #10b981;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+
+    .download-deck-btn:hover {
+      background: #059669;
+    }
+
+    .sentence-card {
+      background: #1a2234;
+      border: 1px solid #283548;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .sentence-card:hover {
+      border-color: #3b82f6;
+    }
+
+    .sentence-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .japanese-text {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.8;
+    }
+
+    ruby {
+      ruby-align: center;
+    }
+
+    rt {
+      font-size: 0.55em;
+      color: var(--ruby);
+      font-weight: 600;
+    }
+
+    .english-text {
+      color: #cbd5e1;
+      font-size: 16px;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .audio-player {
+      margin-top: 14px;
+    }
+
+    audio {
+      width: 100%;
+      height: 38px;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .vocab-chips {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .vocab-chip {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #c7d2fe;
+      font-size: 13px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .status-msg {
+      margin-left: 12px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">🎌 Google Cloud AI + Anki Engine</div>
+      <h1>Anime Japanese Audio & Anki Creator</h1>
+      <p class="subtitle">Turn anime scripts, dialogue, and Japanese sentences into natural audio, furigana readings, and ready-to-import Anki flashcards before you watch!</p>
+    </header>
+
+    <!-- Main Input Card -->
+    <div class="card">
+      <form id="generator-form">
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <label for="japanese-input" style="margin-bottom: 0;">Japanese Text or Subtitle Dialogue</label>
+            <div>
+              <span style="font-size: 12px; color: var(--text-muted);">Try Sample:</span>
+              <button type="button" class="sample-pill" id="sample-shonen">Shonen Quotes</button>
+              <button type="button" class="sample-pill" id="sample-daily">Daily Life</button>
+            </div>
+          </div>
+          <textarea id="japanese-input" placeholder="Paste Japanese sentences, one per line, or paste entire anime dialogue (.srt / .ass subtitles)..." required></textarea>
+          <div class="hint">Supports plain text, multi-line dialogue, or anime subtitle files (.srt/.ass). Empty lines and timestamps are automatically cleaned.</div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="deck-name">Anki Deck Name</label>
+            <input type="text" id="deck-name" value="Anime Immersion - Japanese Practice" placeholder="e.g. Jujutsu Kaisen Episode 1">
+          </div>
+
+          <div class="form-group">
+            <label for="voice-select">Japanese AI Voice (Google Cloud Neural2)</label>
+            <select id="voice-select">
+              <option value="neural2-female" selected>Female (Neural2-B - Clear & Natural)</option>
+              <option value="neural2-male">Male (Neural2-C - Protagonist Style)</option>
+              <option value="wavenet-female">Female (Wavenet-A)</option>
+              <option value="wavenet-male">Male (Wavenet-C)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="speaking-rate">Speaking Speed: <span id="rate-label">0.95x (Recommended for Learners)</span></label>
+          <input type="range" id="speaking-rate" min="0.75" max="1.15" step="0.05" value="0.95" style="width: 100%;">
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" id="submit-btn" class="btn-primary">
+            <span>✨ Generate Audio & Anki Cards</span>
+          </button>
+          <span id="status-text" class="status-msg"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Results Container -->
+    <div id="results-card" class="card" style="display: none;">
+      <div class="results-header">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 700;">Generated Japanese Cards (<span id="card-count">0</span>)</h2>
+          <div style="font-size: 13px; color: var(--text-muted);">Preview sentences, furigana readings, and audio clips</div>
+        </div>
+        <div>
+          <a id="download-deck-btn" href="#" class="download-deck-btn" download>
+            📥 Download Anki Deck (.apkg)
+          </a>
+        </div>
+      </div>
+
+      <div id="cards-list"></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('generator-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const statusText = document.getElementById('status-text');
+    const resultsCard = document.getElementById('results-card');
+    const cardsList = document.getElementById('cards-list');
+    const cardCount = document.getElementById('card-count');
+    const downloadDeckBtn = document.getElementById('download-deck-btn');
+    const rateInput = document.getElementById('speaking-rate');
+    const rateLabel = document.getElementById('rate-label');
+
+    // Samples
+    document.getElementById('sample-shonen').addEventListener('click', () => {
+      document.getElementById('japanese-input').value = 
+`諦めたらそこで試合終了ですよ。
+お前はもう死んでいる。
+海賊王に俺はなる！
+俺のマグマは火をも焼き尽くす！
+心臓を捧げよ！`;
+    });
+
+    document.getElementById('sample-daily').addEventListener('click', () => {
+      document.getElementById('japanese-input').value = 
+`明日の天気はどうですか？
+日本語の勉強はとても面白いです。
+今日、新しいアニメの第１話を見ました。
+一緒に駅前のカフェに行きませんか？`;
+    });
+
+    rateInput.addEventListener('input', (e) => {
+      const val = e.target.value;
+      rateLabel.textContent = `${val}x ${val == 0.95 ? '(Recommended for Learners)' : ''}`;
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const rawText = document.getElementById('japanese-input').value.trim();
+      const deckName = document.getElementById('deck-name').value.trim() || 'Anime Japanese Practice';
+      const voiceKey = document.getElementById('voice-select').value;
+      const speakingRate = parseFloat(rateInput.value);
+
+      if (!rawText) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="loading-spinner"></span> <span>Synthesizing Audio & Parsing...</span>';
+      statusText.textContent = 'Processing with Google Cloud AI...';
+
+      try {
+        const response = await fetch('/api/process', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rawText, deckName, voiceKey, speakingRate })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to process sentences');
+        }
+
+        renderResults(data);
+        statusText.textContent = 'Done! Ready for download.';
+      } catch (err) {
+        alert('Error: ' + err.message);
+        statusText.textContent = 'Error occurred.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>✨ Generate Audio & Anki Cards</span>';
+      }
+    });
+
+    function renderResults(data) {
+      cardCount.textContent = data.items.length;
+      downloadDeckBtn.href = `/api/download/${encodeURIComponent(data.deckFilename)}`;
+      cardsList.innerHTML = '';
+
+      data.items.forEach((item, idx) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'sentence-card';
+
+        const vocabHtml = (item.vocab && item.vocab.length)
+          ? `<div class="vocab-chips">${item.vocab.map(v => `<span class="vocab-chip">${v.word}${v.reading ? ` (${v.reading})` : ''}</span>`).join('')}</div>`
+          : '';
+
+        cardEl.innerHTML = `
+          <div class="sentence-top">
+            <div style="font-size: 13px; color: #6366f1; font-weight: 700;">#${idx + 1}</div>
+          </div>
+          <div class="japanese-text">${item.rubyHtml || item.original}</div>
+          <div class="english-text">${item.translation}</div>
+          ${vocabHtml}
+          <div class="audio-player">
+            <audio controls src="/audio/${item.audioFilename}"></audio>
+          </div>
+        `;
+        cardsList.appendChild(cardEl);
+      });
+
+      resultsCard.style.display = 'block';
+      resultsCard.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
